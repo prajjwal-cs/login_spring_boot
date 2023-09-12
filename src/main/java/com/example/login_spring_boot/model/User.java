@@ -18,14 +18,9 @@ import java.util.Collections;
 @Table(name = "users")
 public class User implements UserDetails {
 
-    @SequenceGenerator(
-            name = "users_sequence",
-            sequenceName = "users_sequence",
-            allocationSize = 1
-    )
+    @SequenceGenerator(name = "users_sequence", sequenceName = "users_sequence", allocationSize = 1)
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,
-                    generator = "users_sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_sequence")
     private Long id;
     @NotNull(message = "Name cannot be empty")
     @Column(name = "name")
@@ -66,7 +61,7 @@ public class User implements UserDetails {
     }
 
     public void setPassword(String password) {
-        this.password =password;
+        this.password = password;
     }
 
     @Override

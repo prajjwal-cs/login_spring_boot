@@ -1,6 +1,5 @@
 package com.example.login_spring_boot.service;
 
-import com.example.login_spring_boot.model.Role;
 import com.example.login_spring_boot.model.User;
 import com.example.login_spring_boot.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,19 +46,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (existingUserMobile.isPresent() && existingUserEmail.isPresent()) {
             message = "Email and Mobile Number both Already Present!";
         }
-        System.out.println("existingUserEmail.isPresent() - " +
-                existingUserEmail.isPresent() + "existingUserMobile.isPresent() - "
-                + existingUserMobile.isPresent());
+        System.out.println("existingUserEmail.isPresent() - " + existingUserEmail.isPresent() + "existingUserMobile.isPresent() - " + existingUserMobile.isPresent());
         return Arrays.asList(userExist, message);
     }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return userRepository.findByEmail(email).orElseThrow(
-                () -> new UsernameNotFoundException(
-                        String.format("USER_NOT_FOUND", email)
-                )
-        );
+        return userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(String.format("USER_NOT_FOUND", email)));
     }
 
 }

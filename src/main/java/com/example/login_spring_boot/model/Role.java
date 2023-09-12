@@ -1,8 +1,7 @@
 package com.example.login_spring_boot.model;
 
 public enum Role {
-    USER("User"),
-    ADMIN("Admin");
+    USER("User"), ADMIN("Admin");
 
     private final String value;
 

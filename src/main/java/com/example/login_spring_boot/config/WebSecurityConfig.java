@@ -1,7 +1,6 @@
 package com.example.login_spring_boot.config;
 
 import com.example.login_spring_boot.service.UserServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -37,8 +36,7 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig)
-        throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
     }
 
@@ -54,37 +52,18 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        http.authorizeHttpRequests((auth) -> auth
-                                .requestMatchers("/", "/login", "/register").permitAll()
-                                .requestMatchers("/admin/**").hasAnyAuthority("ADMIN")
-                                .requestMatchers("/account/**").hasAnyAuthority("USER")
-                                .anyRequest().authenticated())
-                .csrf(AbstractHttpConfigurer::disable)
-                .formLogin(formLogin -> formLogin
-                        .loginPage("/login")
-                        .failureUrl("/login?error=true")
-                        .successHandler(successHandler)
-                        .usernameParameter("email")
-                        .passwordParameter("password")
-                )
+        http.authorizeHttpRequests((auth) -> auth.requestMatchers("/", "/login", "/register").permitAll().requestMatchers("/admin/**").hasAnyAuthority("ADMIN").requestMatchers("/account/**").hasAnyAuthority("USER").anyRequest().authenticated()).csrf(AbstractHttpConfigurer::disable).formLogin(formLogin -> formLogin.loginPage("/login").failureUrl("/login?error=true").successHandler(successHandler).usernameParameter("email").passwordParameter("password"))
 
-                .logout(logout -> logout
-                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                        .logoutSuccessUrl("/")
-                )
-                .exceptionHandling((exceptionHandling) -> exceptionHandling
-                        .accessDeniedPage("")
-                );
+                .logout(logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/")).exceptionHandling((exceptionHandling) -> exceptionHandling.accessDeniedPage(""));
 
         http.authenticationProvider(authenticationProvider());
-        http.headers(headers -> headers
-                .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
+        http.headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
 
         return http.build();
     }
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/images/**", "/js/**","/webjars/**");
+        return (web) -> web.ignoring().requestMatchers("/images/**", "/js/**", "/webjars/**");
     }
 }
